@@ -28,7 +28,6 @@ import android.view.animation.OvershootInterpolator;
 
 public class DelayedDismissView extends View {
 
-    private static final int EXTRA_TOUCHABLE_SIZE = 150;
     private static final int DELAY_TIME = 3000;
     private int mDelayTime;
 
@@ -39,23 +38,24 @@ public class DelayedDismissView extends View {
     private RectF mIconRect;
     private DismissListener mDismissListener;
     private ValueAnimator mValueAnimator;
-    private boolean mCanceled = false;
+    private boolean mAnimationCanceled = false;
+    private boolean mCanceledByUser = false;
     private float mCurrAngle = 0;
 
     private Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
         @Override
         public void onAnimationStart(Animator animation) {
-            mCanceled = false;
+            mAnimationCanceled = false;
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            if (mDismissListener != null && !mCanceled) mDismissListener.onDismissed();
+            if (mDismissListener != null && !mAnimationCanceled) mDismissListener.onDismissed();
         }
 
         @Override
         public void onAnimationCancel(Animator animation) {
-            mCanceled = true;
+            mAnimationCanceled = true;
         }
 
         @Override
@@ -112,40 +112,41 @@ public class DelayedDismissView extends View {
 
     }
 
-    public void setDelayTime(int delayTime){
+    public void setDelayTime(int delayTime) {
         this.mDelayTime = delayTime;
     }
 
-    public void setProgressColor(@ColorInt int color){
+    public void setProgressColor(@ColorInt int color) {
         this.mArcPaint.setColor(color);
     }
 
-    public void setBackgroundColor(@ColorInt int color){
+    public void setBackgroundColor(@ColorInt int color) {
         this.mBgPaint.setColor(color);
     }
 
-    public void setIconDrawable(@DrawableRes int drawable){
+    public void setIconDrawable(@DrawableRes int drawable) {
         this.setIconBitmap(BitmapFactory.decodeResource(getResources(), drawable));
     }
 
-    public void setIconBitmap(Bitmap bitmap){
+    public void setIconBitmap(Bitmap bitmap) {
         this.mDismissBitmap = bitmap;
         this.requestLayout();
     }
 
-    public void setIconTintColor(@ColorInt int color){
+    public void setIconTintColor(@ColorInt int color) {
         this.mIconPaint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
     }
 
     public void dismiss(DismissListener listener) {
         mCurrAngle = 0;
         mDismissListener = listener;
+        mCanceledByUser = false;
         startAnimation();
     }
 
     private void startAnimation() {
 
-        if(mValueAnimator != null) mValueAnimator.cancel();
+        if (mValueAnimator != null) mValueAnimator.cancel();
 
         mValueAnimator = ValueAnimator.ofFloat(mCurrAngle, 360);
         mValueAnimator.setDuration(getDeltaDelayedTime());
@@ -156,6 +157,7 @@ public class DelayedDismissView extends View {
 
     /**
      * Calculated relative time needed to complete the animation based on current angle
+     *
      * @return time needed for animation to be completed
      */
     private int getDeltaDelayedTime() {
@@ -178,6 +180,9 @@ public class DelayedDismissView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if(mCanceledByUser) return false;
+
         int action = event.getAction() & event.getActionMasked();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -187,6 +192,7 @@ public class DelayedDismissView extends View {
                 scaleUp();
                 //if we touch up inside our view bounds, lets notify a cancel dismiss
                 if (mIconRect.contains((int) event.getX(), (int) event.getY())) {
+                    mCanceledByUser = true;
                     if (mValueAnimator != null) mValueAnimator.cancel();
                     if (mDismissListener != null) mDismissListener.onCanceled();
                 }
@@ -220,21 +226,38 @@ public class DelayedDismissView extends View {
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
 
-        //if we are visible again, check if the animation was previously canceled in order to
-        //resume it
-        if (visibility == VISIBLE && mCanceled) startAnimation();
-            //if we are not visible, cancel animation if running
-        else if (mValueAnimator != null && mValueAnimator.isRunning()) mValueAnimator.cancel();
+        switch (visibility) {
+            case VISIBLE:
+                //if we are visible again, check if the animation was previously canceled in order to
+                //resume it
+                if (mAnimationCanceled && !mCanceledByUser) startAnimation();
+                break;
+            case GONE:
+            case INVISIBLE:
+            default:
+                //if we are not visible, cancel animation if running
+                if (mValueAnimator != null && mValueAnimator.isRunning())
+                    mValueAnimator.cancel();
+                break;
+        }
     }
 
     @Override
     public void onScreenStateChanged(int screenState) {
         super.onScreenStateChanged(screenState);
-        //if screen turns on, check if the animation was previously canceled in order to
-        //resume it
-        if (screenState == SCREEN_STATE_ON && mCanceled) startAnimation();
-            //if screen is off and animation is running, cancel it
-        else if (mValueAnimator != null && mValueAnimator.isRunning()) mValueAnimator.cancel();
+
+        switch (screenState) {
+            case SCREEN_STATE_ON:
+                //if screen turns on, check if the animation was previously canceled in order to
+                //resume it
+                if (mAnimationCanceled && !mCanceledByUser) startAnimation();
+                break;
+            case SCREEN_STATE_OFF:
+                //if screen is off and animation is running, cancel it
+                if (mValueAnimator != null && mValueAnimator.isRunning())
+                    mValueAnimator.cancel();
+                break;
+        }
     }
 
 
@@ -247,6 +270,7 @@ public class DelayedDismissView extends View {
 
     public interface DismissListener {
         void onDismissed();
+
         void onCanceled();
     }
 
