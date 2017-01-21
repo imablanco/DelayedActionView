@@ -2,10 +2,15 @@
 <resources>
 
     <declare-styleable name="DelayedDismissView">
+        <!--Icon to show as dismiss view-->
         <attr name="ddvDrawable" format="reference"/>
+        <!--Delay time to trigger action-->
         <attr name="ddvDelay" format="integer"/>
+        <!--Color of the progress count down. Uses colorAccent as default-->
         <attr name="ddvProgressColor" format="color"/>
+        <!--Background color of the view. Uses colorPrimaryDark as default-->
         <attr name="ddvBackGroundColor" format="color"/>
+        <!--Tint color of the dismiss icon view. Uses colorPrimary as default-->
         <attr name="ddvDrawableTintColor" format="color"/>
     </declare-styleable>
 
