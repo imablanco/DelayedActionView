@@ -10,14 +10,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -42,9 +40,7 @@ public class DelayedDismissView extends View {
     private DismissListener mDismissListener;
     private ValueAnimator mValueAnimator;
     private boolean mCanceled = false;
-
     private float mCurrAngle = 0;
-    private Rect mDelegateArea;
 
     private Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
         @Override
@@ -190,7 +186,7 @@ public class DelayedDismissView extends View {
             case MotionEvent.ACTION_UP:
                 scaleUp();
                 //if we touch up inside our view bounds, lets notify a cancel dismiss
-                if (mDelegateArea.contains((int) event.getRawX(), (int) event.getRawY())) {
+                if (mIconRect.contains((int) event.getX(), (int) event.getY())) {
                     if (mValueAnimator != null) mValueAnimator.cancel();
                     if (mDismissListener != null) mDismissListener.onCanceled();
                 }
@@ -229,10 +225,6 @@ public class DelayedDismissView extends View {
         if (visibility == VISIBLE && mCanceled) startAnimation();
             //if we are not visible, cancel animation if running
         else if (mValueAnimator != null && mValueAnimator.isRunning()) mValueAnimator.cancel();
-
-        if (visibility == VISIBLE && mDelegateArea == null) {
-            expandTouchArea();
-        }
     }
 
     @Override
@@ -245,28 +237,6 @@ public class DelayedDismissView extends View {
         else if (mValueAnimator != null && mValueAnimator.isRunning()) mValueAnimator.cancel();
     }
 
-
-    /**
-     * Expands view touchable area in order to let user hit the view a little outside its bounds
-     */
-    private void expandTouchArea() {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mDelegateArea = new Rect();
-                getHitRect(mDelegateArea);
-                mDelegateArea.top -= EXTRA_TOUCHABLE_SIZE;
-                mDelegateArea.bottom += EXTRA_TOUCHABLE_SIZE;
-                mDelegateArea.left -= EXTRA_TOUCHABLE_SIZE;
-                mDelegateArea.right += EXTRA_TOUCHABLE_SIZE;
-
-                TouchDelegate expandedArea = new TouchDelegate(mDelegateArea, DelayedDismissView.this);
-                if (getParent() instanceof View)
-                    ((View) getParent()).setTouchDelegate(expandedArea);
-            }
-        });
-
-    }
 
     @Override
     protected void onDetachedFromWindow() {
