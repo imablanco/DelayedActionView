@@ -1,4 +1,4 @@
-package com.ablanco.library;
+package com.ablanco.delayeddismissview;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;

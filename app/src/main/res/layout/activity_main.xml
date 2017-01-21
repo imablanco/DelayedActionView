@@ -12,7 +12,7 @@
     tools:context="com.ablanco.delayeddismissview.MainActivity">
 
 
-    <com.ablanco.library.DelayedDismissView
+    <com.ablanco.delayeddismissview.DelayedDismissView
         android:layout_centerInParent="true"
         android:id="@+id/delayed"
         android:layout_width="wrap_content"

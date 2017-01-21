@@ -1,4 +1,4 @@
-package com.ablanco.library;
+package com.ablanco.delayeddismissview;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

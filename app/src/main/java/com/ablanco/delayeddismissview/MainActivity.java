@@ -5,8 +5,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.ablanco.library.DelayedDismissView;
-
 public class MainActivity extends AppCompatActivity implements DelayedDismissView.DismissListener {
 
     private Handler handler = new Handler();
