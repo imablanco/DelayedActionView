@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DelayedDismissView">
+        <attr name="ddvDrawable" format="reference"/>
+        <attr name="ddvDelay" format="integer"/>
+        <attr name="ddvProgressColor" format="color"/>
+        <attr name="ddvBackGroundColor" format="color"/>
+        <attr name="ddvDrawableTintColor" format="color"/>
+    </declare-styleable>
+
+</resources>
