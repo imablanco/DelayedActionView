@@ -120,6 +120,7 @@ public class DelayedDismissView extends View {
         this.mArcPaint.setColor(color);
     }
 
+    @Override
     public void setBackgroundColor(@ColorInt int color) {
         this.mBgPaint.setColor(color);
     }

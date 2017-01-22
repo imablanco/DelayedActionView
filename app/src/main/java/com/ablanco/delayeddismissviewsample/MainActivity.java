@@ -1,9 +1,12 @@
-package com.ablanco.delayeddismissview;
+package com.ablanco.delayeddismissviewsample;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.ablanco.delayeddismissview.DelayedDismissView;
+
 
 public class MainActivity extends AppCompatActivity implements DelayedDismissView.DismissListener {
 
