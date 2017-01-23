@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements DelayedActionView
     private Runnable mActionRunnable = new Runnable() {
         @Override
         public void run() {
-            delayedActionView.dismiss(MainActivity.this);
+            delayedActionView.start(MainActivity.this);
         }
     };
 
@@ -28,11 +28,22 @@ public class MainActivity extends AppCompatActivity implements DelayedActionView
 
         delayedActionView = (DelayedActionView) findViewById(R.id.delayed);
         handler.post(mActionRunnable);
+        delayedActionView.start(new DelayedActionView.ActionListener() {
+            @Override
+            public void onAction() {
+
+            }
+
+            @Override
+            public void onCanceled() {
+
+            }
+        });
     }
 
     @Override
     public void onAction() {
-        Toast.makeText(this, "Dismissed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Action!", Toast.LENGTH_SHORT).show();
         handler.removeCallbacks(mActionRunnable);
         handler.postDelayed(mActionRunnable, 2500);
     }

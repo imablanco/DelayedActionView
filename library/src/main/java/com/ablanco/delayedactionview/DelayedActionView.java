@@ -31,7 +31,7 @@ public class DelayedActionView extends View {
     private static final int DELAY_TIME = 3000;
     private int mDelayTime;
 
-    private Bitmap mDismissBitmap;
+    private Bitmap mActionBitmap;
     private Paint mArcPaint = new Paint();
     private Paint mBgPaint = new Paint();
     private Paint mIconPaint = new Paint();
@@ -84,7 +84,7 @@ public class DelayedActionView extends View {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DelayedActionView, defStyleAttr, 0);
         mDelayTime = ta.getInteger(R.styleable.DelayedActionView_davDelay, DELAY_TIME);
-        int dismissIconRes = ta.getResourceId(R.styleable.DelayedActionView_davDrawable, R.drawable.ic_dismiss);
+        int actionIconRes = ta.getResourceId(R.styleable.DelayedActionView_davDrawable, R.drawable.ic_dismiss);
         int progressColor = ta.getColor(R.styleable.DelayedActionView_davProgressColor,
                 ThemeUtils.getThemeColor(context, R.attr.colorAccent));
         int backGroundColor = ta.getColor(R.styleable.DelayedActionView_davBackGroundColor,
@@ -93,10 +93,10 @@ public class DelayedActionView extends View {
                 ThemeUtils.getThemeColor(context, R.attr.colorPrimary));
         ta.recycle();
 
-        mDismissBitmap = BitmapFactory.decodeResource(getResources(), dismissIconRes);
+        mActionBitmap = BitmapFactory.decodeResource(getResources(), actionIconRes);
 
         //store icon's rect in order to draw inside its bounds
-        mIconRect = new RectF(10, 10, mDismissBitmap.getWidth() - 10, mDismissBitmap.getHeight() - 10);
+        mIconRect = new RectF(10, 10, mActionBitmap.getWidth() - 10, mActionBitmap.getHeight() - 10);
 
         mArcPaint.setColor(progressColor);
         mArcPaint.setAntiAlias(true);
@@ -130,7 +130,7 @@ public class DelayedActionView extends View {
     }
 
     public void setIconBitmap(Bitmap bitmap) {
-        this.mDismissBitmap = bitmap;
+        this.mActionBitmap = bitmap;
         this.requestLayout();
     }
 
@@ -138,7 +138,7 @@ public class DelayedActionView extends View {
         this.mIconPaint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
     }
 
-    public void dismiss(ActionListener listener) {
+    public void start(ActionListener listener) {
         mCurrAngle = 0;
         mActionListener = listener;
         mCanceledByUser = false;
@@ -173,9 +173,9 @@ public class DelayedActionView extends View {
         //draw bg circle
         canvas.drawCircle(mIconRect.centerX(), mIconRect.centerY(),
                 Math.max(mIconRect.width() / 2, mIconRect.height() / 2), mBgPaint);
-        //draw our dismiss image
-        canvas.drawBitmap(mDismissBitmap, null, mIconRect, mIconPaint);
-        //draw arc dismiss progress
+        //draw our start image
+        canvas.drawBitmap(mActionBitmap, null, mIconRect, mIconPaint);
+        //draw arc start progress
         canvas.drawArc(mIconRect, 0, mCurrAngle, false, mArcPaint);
     }
 
@@ -191,7 +191,7 @@ public class DelayedActionView extends View {
                 return true;
             case MotionEvent.ACTION_UP:
                 scaleUp();
-                //if we touch up inside our view bounds, lets notify a cancel dismiss
+                //if we touch up inside our view bounds, lets notify a cancel start
                 if (mIconRect.contains((int) event.getX(), (int) event.getY())) {
                     mCanceledByUser = true;
                     if (mValueAnimator != null) mValueAnimator.cancel();
@@ -217,9 +217,9 @@ public class DelayedActionView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //make the view as big as the maximum dimension of our dismiss drawable
+        //make the view as big as the maximum dimension of our start drawable
         //to make sure its completely visible
-        int size = Math.max(mDismissBitmap.getHeight(), mDismissBitmap.getWidth());
+        int size = Math.max(mActionBitmap.getHeight(), mActionBitmap.getWidth());
         setMeasuredDimension(size, size);
     }
 

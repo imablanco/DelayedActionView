@@ -2,7 +2,7 @@
 <resources>
 
     <declare-styleable name="DelayedActionView">
-        <!--Icon to show as dismiss view-->
+        <!--Icon to show as action view-->
         <attr name="davDrawable" format="reference"/>
         <!--Delay time to trigger action-->
         <attr name="davDelay" format="integer"/>
@@ -10,7 +10,7 @@
         <attr name="davProgressColor" format="color"/>
         <!--Background color of the view. Uses colorPrimaryDark as default-->
         <attr name="davBackGroundColor" format="color"/>
-        <!--Tint color of the dismiss icon view. Uses colorPrimary as default-->
+        <!--Tint color of the action icon view. Uses colorPrimary as default-->
         <attr name="davDrawableTintColor" format="color"/>
     </declare-styleable>
 
