@@ -1,7 +1,7 @@
 # DelayedActionView
 A view that shows a visual progress count down before triggering the action
 
-![alt tag](http://i.imgur.com/LAIrCa2.png)
+![alt tag](art/davgif.gif)
 
 ## Installation
 
@@ -24,7 +24,7 @@ Add view to your layout
 
  ```XML
     <declare-styleable name="DelayedActionView">
-        <!--Icon to show as start view-->
+        <!--Icon to show as action view-->
         <attr name="davDrawable" format="reference"/>
         <!--Delay time to trigger action-->
         <attr name="davDelay" format="integer"/>
