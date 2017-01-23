@@ -8,7 +8,7 @@ import android.util.TypedValue;
 
 /**
  * Created by Álvaro Blanco Cabrero on 21/1/17.
- * DelayedDismissView.
+ * DelayedActionView.
  */
 
 public class ThemeUtils {

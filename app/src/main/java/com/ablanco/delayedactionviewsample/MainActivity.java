@@ -8,10 +8,10 @@ import android.widget.Toast;
 import com.ablanco.delayedactionview.DelayedActionView;
 
 
-public class MainActivity extends AppCompatActivity implements DelayedActionView.DismissListener {
+public class MainActivity extends AppCompatActivity implements DelayedActionView.ActionListener {
 
     private Handler handler = new Handler();
-    private Runnable mDismissRunnable = new Runnable() {
+    private Runnable mActionRunnable = new Runnable() {
         @Override
         public void run() {
             delayedActionView.dismiss(MainActivity.this);
@@ -27,21 +27,18 @@ public class MainActivity extends AppCompatActivity implements DelayedActionView
         setContentView(R.layout.activity_main);
 
         delayedActionView = (DelayedActionView) findViewById(R.id.delayed);
-        handler.post(mDismissRunnable);
+        handler.post(mActionRunnable);
     }
 
     @Override
-    public void onDismissed() {
+    public void onAction() {
         Toast.makeText(this, "Dismissed", Toast.LENGTH_SHORT).show();
-        handler.removeCallbacks(mDismissRunnable);
-        handler.postDelayed(mDismissRunnable, 2500);
+        handler.removeCallbacks(mActionRunnable);
+        handler.postDelayed(mActionRunnable, 2500);
     }
 
     @Override
     public void onCanceled() {
         Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
-      /*  handler.removeCallbacks(mDismissRunnable);
-        handler.postDelayed(mDismissRunnable, 2500);*/
-
     }
 }

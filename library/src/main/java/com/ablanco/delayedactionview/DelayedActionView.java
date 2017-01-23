@@ -23,7 +23,7 @@ import android.view.animation.OvershootInterpolator;
 
 /**
  * Created by Álvaro Blanco Cabrero on 21/1/17.
- * DelayedDismissView.
+ * DelayedActionView.
  */
 
 public class DelayedActionView extends View {
@@ -36,7 +36,7 @@ public class DelayedActionView extends View {
     private Paint mBgPaint = new Paint();
     private Paint mIconPaint = new Paint();
     private RectF mIconRect;
-    private DismissListener mDismissListener;
+    private ActionListener mActionListener;
     private ValueAnimator mValueAnimator;
     private boolean mAnimationCanceled = false;
     private boolean mCanceledByUser = false;
@@ -50,7 +50,7 @@ public class DelayedActionView extends View {
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            if (mDismissListener != null && !mAnimationCanceled) mDismissListener.onDismissed();
+            if (mActionListener != null && !mAnimationCanceled) mActionListener.onAction();
         }
 
         @Override
@@ -138,9 +138,9 @@ public class DelayedActionView extends View {
         this.mIconPaint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
     }
 
-    public void dismiss(DismissListener listener) {
+    public void dismiss(ActionListener listener) {
         mCurrAngle = 0;
-        mDismissListener = listener;
+        mActionListener = listener;
         mCanceledByUser = false;
         startAnimation();
     }
@@ -195,7 +195,7 @@ public class DelayedActionView extends View {
                 if (mIconRect.contains((int) event.getX(), (int) event.getY())) {
                     mCanceledByUser = true;
                     if (mValueAnimator != null) mValueAnimator.cancel();
-                    if (mDismissListener != null) mDismissListener.onCanceled();
+                    if (mActionListener != null) mActionListener.onCanceled();
                 }
 
                 return true;
@@ -269,8 +269,8 @@ public class DelayedActionView extends View {
         if (mValueAnimator != null && mValueAnimator.isRunning()) mValueAnimator.cancel();
     }
 
-    public interface DismissListener {
-        void onDismissed();
+    public interface ActionListener {
+        void onAction();
 
         void onCanceled();
     }
