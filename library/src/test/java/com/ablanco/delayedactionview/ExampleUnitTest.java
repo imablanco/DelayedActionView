@@ -1,4 +1,4 @@
-package com.ablanco.delayeddismissviewsample;
+package com.ablanco.delayedactionview;
 
 import org.junit.Test;
 

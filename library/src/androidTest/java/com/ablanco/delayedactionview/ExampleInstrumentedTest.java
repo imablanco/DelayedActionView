@@ -1,4 +1,4 @@
-package com.ablanco.delayeddismissview;
+package com.ablanco.delayedactionview;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

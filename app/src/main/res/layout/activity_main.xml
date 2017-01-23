@@ -9,10 +9,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.ablanco.delayeddismissviewsample.MainActivity">
+    tools:context="com.ablanco.delayedactionviewsample.MainActivity">
 
 
-    <com.ablanco.delayeddismissview.DelayedDismissView
+    <com.ablanco.delayedactionview.DelayedActionView
         android:layout_centerInParent="true"
         android:id="@+id/delayed"
         android:layout_width="wrap_content"

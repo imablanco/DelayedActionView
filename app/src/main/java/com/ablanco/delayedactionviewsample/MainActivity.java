@@ -1,24 +1,24 @@
-package com.ablanco.delayeddismissviewsample;
+package com.ablanco.delayedactionviewsample;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.ablanco.delayeddismissview.DelayedDismissView;
+import com.ablanco.delayedactionview.DelayedActionView;
 
 
-public class MainActivity extends AppCompatActivity implements DelayedDismissView.DismissListener {
+public class MainActivity extends AppCompatActivity implements DelayedActionView.DismissListener {
 
     private Handler handler = new Handler();
     private Runnable mDismissRunnable = new Runnable() {
         @Override
         public void run() {
-            delayedDismissView.dismiss(MainActivity.this);
+            delayedActionView.dismiss(MainActivity.this);
         }
     };
 
-    private DelayedDismissView delayedDismissView;
+    private DelayedActionView delayedActionView;
 
 
     @Override
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements DelayedDismissVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        delayedDismissView = (DelayedDismissView) findViewById(R.id.delayed);
+        delayedActionView = (DelayedActionView) findViewById(R.id.delayed);
         handler.post(mDismissRunnable);
     }
 

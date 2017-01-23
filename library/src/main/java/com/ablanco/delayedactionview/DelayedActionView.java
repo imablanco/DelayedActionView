@@ -1,4 +1,4 @@
-package com.ablanco.delayeddismissview;
+package com.ablanco.delayedactionview;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -26,7 +26,7 @@ import android.view.animation.OvershootInterpolator;
  * DelayedDismissView.
  */
 
-public class DelayedDismissView extends View {
+public class DelayedActionView extends View {
 
     private static final int DELAY_TIME = 3000;
     private int mDelayTime;
@@ -71,25 +71,25 @@ public class DelayedDismissView extends View {
         }
     };
 
-    public DelayedDismissView(Context context) {
+    public DelayedActionView(Context context) {
         this(context, null);
     }
 
-    public DelayedDismissView(Context context, AttributeSet attrs) {
+    public DelayedActionView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DelayedDismissView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DelayedActionView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DelayedDismissView, defStyleAttr, 0);
-        mDelayTime = ta.getInteger(R.styleable.DelayedDismissView_ddvDelay, DELAY_TIME);
-        int dismissIconRes = ta.getResourceId(R.styleable.DelayedDismissView_ddvDrawable, R.drawable.ic_dismiss);
-        int progressColor = ta.getColor(R.styleable.DelayedDismissView_ddvProgressColor,
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DelayedActionView, defStyleAttr, 0);
+        mDelayTime = ta.getInteger(R.styleable.DelayedActionView_davDelay, DELAY_TIME);
+        int dismissIconRes = ta.getResourceId(R.styleable.DelayedActionView_davDrawable, R.drawable.ic_dismiss);
+        int progressColor = ta.getColor(R.styleable.DelayedActionView_davProgressColor,
                 ThemeUtils.getThemeColor(context, R.attr.colorAccent));
-        int backGroundColor = ta.getColor(R.styleable.DelayedDismissView_ddvBackGroundColor,
+        int backGroundColor = ta.getColor(R.styleable.DelayedActionView_davBackGroundColor,
                 ThemeUtils.getThemeColor(context, R.attr.colorPrimaryDark));
-        int drawableTintColor = ta.getColor(R.styleable.DelayedDismissView_ddvDrawableTintColor,
+        int drawableTintColor = ta.getColor(R.styleable.DelayedActionView_davDrawableTintColor,
                 ThemeUtils.getThemeColor(context, R.attr.colorPrimary));
         ta.recycle();
 
